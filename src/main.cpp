@@ -11,6 +11,8 @@ using namespace std;
 
 void load_setup()
 {
+    printf("\n***** Программа для поиска информации среди указанного множества документов *****\n\n");
+    
     FILE *file = fopen("setup.txt", "r");
 
     if (file == NULL)
@@ -37,8 +39,6 @@ void load_setup()
 int main()
 {
     setlocale(LC_ALL, "Russian");
-
-    printf("\n***** Программа для поиска информации среди указанного множества документов *****\n\n");
 
     load_setup();
 
