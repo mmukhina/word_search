@@ -7,6 +7,5 @@
 
 ### Компиляция
 ```
-g++ -std=c++11 -Wall -o program main.cpp
-./program
+make run
 ```
