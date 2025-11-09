@@ -40,15 +40,15 @@ make run
 <img width="248" height="168" alt="Screenshot 2025-11-06 at 15 08 23" src="https://github.com/user-attachments/assets/35ae2dc9-d25c-41bd-a345-51f7c21c1019" />
 
 <br><br>
-Поиск слова в документах их списка
+Поиск слова в документах из списка
 
-<img width="257" height="169" alt="Screenshot 2025-11-06 at 15 08 51" src="https://github.com/user-attachments/assets/5970c60c-86ec-4364-bfc2-d577d5e01a0f" />
+<img width="265" height="127" alt="Screenshot 2025-11-09 at 14 57 08" src="https://github.com/user-attachments/assets/3d3f8d70-3b7b-4b92-aaf8-0af29e928aac" />
 <br>
-<img width="235" height="90" alt="Screenshot 2025-11-06 at 15 09 19" src="https://github.com/user-attachments/assets/77c473b9-f599-49e8-b2b0-e45092a89f34" />
+<img width="222" height="93" alt="Screenshot 2025-11-09 at 14 55 24" src="https://github.com/user-attachments/assets/130de0c1-54be-4805-b08d-6255bcbb3d9f" />
 <br>
-<img width="252" height="164" alt="Screenshot 2025-11-06 at 15 09 31" src="https://github.com/user-attachments/assets/ed9ab118-3ec3-4973-ac03-f55fa0d05ca9" />
+<img width="388" height="240" alt="Screenshot 2025-11-09 at 14 55 42" src="https://github.com/user-attachments/assets/796a6446-1e8c-4268-b345-b91411986768" />
 <br>
-<img width="242" height="121" alt="Screenshot 2025-11-06 at 15 09 50" src="https://github.com/user-attachments/assets/5d35b77d-57c1-4f8c-8792-59c500879131" />
+<img width="221" height="123" alt="Screenshot 2025-11-09 at 14 56 05" src="https://github.com/user-attachments/assets/1c6046c2-0d61-497f-a92a-37d17e6eff2b" />
 
 <br><br>
 Удалить документ из списка
@@ -65,4 +65,5 @@ make run
 При повторном входе сохраняеться предыдущий список документов
 
 <img width="606" height="171" alt="Screenshot 2025-11-06 at 15 11 42" src="https://github.com/user-attachments/assets/79d951c3-7baa-4263-9b86-c6cd8511dfb2" />
+
 
