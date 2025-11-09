@@ -23,8 +23,8 @@ void load_doc(FILE *file, int doc_num)
         if (head == nullptr)
         {
             head = new Node;
-            head->letter = '\0';           
-            head->in_file = "";            
+            head->letter = '\0';
+            head->in_file = "";
             head->next = vector<Node *>();
         }
         ptr = head;
@@ -38,12 +38,28 @@ void load_doc(FILE *file, int doc_num)
                 if (ptr != head)
                 {
                     string doc_num_str = to_string(doc_num);
-                    // cout << (ptr->in_file.find(doc_num_str) != string::npos) << endl;
-                    if (ptr->in_file.find(doc_num_str) == string::npos)
+                    unsigned long doc_pos = ptr->in_file.find(doc_num_str + "_");
+
+                    if (doc_pos == string::npos)
                     {
                         ptr->in_file += to_string(doc_num);
-                        ptr->in_file += '/';
+                        ptr->in_file += "_";
+                        ptr->in_file += to_string(i);
+                        ptr->in_file += ",/";
                     }
+                    else
+                    {
+                        unsigned long underscore_pos = ptr->in_file.find("_", doc_pos);
+                        unsigned long slash_pos = ptr->in_file.find("/", doc_pos);
+
+                        if (underscore_pos != string::npos && slash_pos != string::npos)
+                        {
+                            string new_position = to_string(i) + ",";
+                            ptr->in_file.insert(slash_pos, new_position);
+                        }
+                    }
+                    // cout << (ptr->in_file.find(doc_num_str) != string::npos) << endl;
+
                     // cout << "Added word ending at: " << currentChar << endl;
                 }
                 ptr = head;

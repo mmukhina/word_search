@@ -2,6 +2,7 @@
 #include "../include/doc.h"
 #include "../include/trie.h"
 #include <fstream>
+#include <string>
 using namespace std;
 
 int choice = 0;                // Выбор пользователя
@@ -36,6 +37,90 @@ int get_choice(int count)
     }
 }
 
+void print_occur(string word_pos, string filename)
+{
+    // Открыть файл в режиме чтения
+    FILE *file = fopen(filename.c_str(), "r");
+    if (file == NULL)
+    {
+        printf("Ошибка: Невозможно открыть файл %s\n", filename.c_str());
+        return;
+    }
+
+    // Для каждой записи находим 5 слов до и после
+    string pos = "";
+    for (int i = 0; i <= word_pos.length(); i++)
+    {
+        if (i == word_pos.length() || word_pos[i] == ',')
+        {
+            if (pos.empty())
+                continue;
+
+            // Перемещаем указатель на исходное слово
+            long current_pos = stoi(pos);
+            fseek(file, current_pos, SEEK_SET);
+
+            int word_count = 0; // Подсчет слов
+            char ch;
+
+            // Двигаемся назад на 5 слов
+            while (current_pos > 0 && word_count <= 5)
+            {
+                // Перемещаем указатель назад
+                current_pos--;
+                fseek(file, current_pos, SEEK_SET);
+
+                // Получаем символ куда сейчас указывает указатель
+                ch = fgetc(file);
+
+                // Если найден пробел, значит найдено потенциальное слово
+                if (ch == ' ' || ch == '\n' || ch == '\t')
+                {
+                    // Если за пробело стоит символ, тогда считаем его словом
+                    fseek(file, current_pos - 1, SEEK_SET);
+                    int prev_ch = fgetc(file);
+                    if (!(prev_ch == ' ' || prev_ch == '\n' || prev_ch == '\t' || prev_ch == EOF))
+                    {
+                        word_count++;
+                    }
+                }
+            }
+
+            fseek(file, current_pos, SEEK_SET);
+            string result = "";
+            int total_words = 0;
+            bool word = false;
+
+            // Читаем все символы пока не найдем необходимое коичеств слов
+            while ((ch = fgetc(file)) != EOF && total_words < word_count + 6)
+            {
+                if (ch == ' ' || ch == '\n' || ch == '\t')
+                {
+                    if (!word){
+                       total_words++; 
+                       word = true;
+                    }
+                    
+                    result += ' ';
+                } else {
+                    result += ch;
+                    word = false;
+                }
+                
+            }
+            // Очищаем прбелы в начале
+            result.erase(0, result.find_first_not_of(" \t\n\r"));
+            printf("-%s\n", result.c_str());
+            pos = "";
+        }
+        else
+        {
+            pos += word_pos[i];
+        }
+    }
+    fclose(file);
+}
+
 void find_word_prep()
 {
     bool incorrect_input = true;
@@ -48,7 +133,9 @@ void find_word_prep()
         if (doc_list_empty())
         {
             printf("Список документов для поиска пуст!\n\n");
-        } else {
+        }
+        else
+        {
             printf("Введите слово для поиска:\n");
         }
 
@@ -64,10 +151,14 @@ void find_word_prep()
             return;
         }
 
-        if (doc_list_empty()) continue;
+        if (doc_list_empty())
+            continue;
 
         string res = find_word((string)input);
+
         string doc_num;
+        string word_pos;
+        bool doc_num_part = true;
 
         if (res.length() > 0)
         {
@@ -79,10 +170,22 @@ void find_word_prep()
                     int doc_num_int = stoi(doc_num);
                     doc_num = "";
                     printf("%d: %s\n", doc_num_int + 1, doc_list[doc_num_int].c_str());
+                    print_occur(word_pos, doc_list[doc_num_int]);
+                    printf("\n");
+                    doc_num_part = true;
+                    word_pos = "";
+                }
+                else if (res[i] == '_')
+                {
+                    doc_num_part = false;
+                }
+                else if (doc_num_part)
+                {
+                    doc_num += res[i];
                 }
                 else
                 {
-                    doc_num += res[i];
+                    word_pos += res[i];
                 }
             }
 
