@@ -1,13 +1,12 @@
 #include "../include/menu.h"
 #include "../include/doc.h"
 #include "../include/trie.h"
-#include <fstream>
-#include <string>
 using namespace std;
 
 int choice = 0;                // Выбор пользователя
 const int main_menu_total = 5; // Количество пунктов в меню
 
+// Функция получения выбора пользователя из меню
 int get_choice(int count)
 {
     int variant;     // Выбор пользователя итоговый
@@ -37,6 +36,7 @@ int get_choice(int count)
     }
 }
 
+// Функция вывода окрестность найденного слова
 void print_occur(string word_pos, string filename)
 {
     // Открыть файл в режиме чтения
@@ -108,7 +108,7 @@ void print_occur(string word_pos, string filename)
                 }
                 
             }
-            // Очищаем прбелы в начале
+            // Очищаем пробелы в начале
             result.erase(0, result.find_first_not_of(" \t\n\r"));
             printf("-%s\n", result.c_str());
             pos = "";
@@ -121,10 +121,12 @@ void print_occur(string word_pos, string filename)
     fclose(file);
 }
 
+// Функция подготовки перед поиском слова
 void find_word_prep()
 {
     bool incorrect_input = true;
 
+    // Продолжать цикл пока пользователь не выйдет из цикла
     while (incorrect_input)
     {
         printf("*** Поиск по слову ***\n");
@@ -141,25 +143,30 @@ void find_word_prep()
 
         printf("> ");
 
+        // Получаем ввод от пользователя
         char input[100];
         fgets(input, 99, stdin);
         input[strcspn(input, "\n")] = '\0';
         printf("\033[2J\033[1;1H"); // Очистка консоли
 
+        // Если пользователь ввел < выйти из режима
         if (strcmp(input, "<") == 0)
         {
             return;
         }
 
+        // Проверка на пустой документ
         if (doc_list_empty())
             continue;
 
+        // Выполнить поиск слова
         string res = find_word((string)input);
 
-        string doc_num;
-        string word_pos;
-        bool doc_num_part = true;
+        string doc_num;             // Номер документа
+        string word_pos;            // Позиция слова в документе
+        bool doc_num_part = true;   // Флаг для распознования ключа
 
+        // Расшифровка записи о местоположения слова в файле
         if (res.length() > 0)
         {
             printf("%s найденно!\n\n", input);
@@ -169,7 +176,9 @@ void find_word_prep()
                 {
                     int doc_num_int = stoi(doc_num);
                     doc_num = "";
+                    // Отобразить пользователю в каком файле надкно слово
                     printf("%d: %s\n", doc_num_int + 1, doc_list[doc_num_int].c_str());
+                    // Отобразить все вхождения этого слова в файле
                     print_occur(word_pos, doc_list[doc_num_int]);
                     printf("\n");
                     doc_num_part = true;
@@ -177,15 +186,15 @@ void find_word_prep()
                 }
                 else if (res[i] == '_')
                 {
-                    doc_num_part = false;
+                    doc_num_part = false;   // Найден разделитель между номером файла и позицией
                 }
                 else if (doc_num_part)
                 {
-                    doc_num += res[i];
+                    doc_num += res[i];      // Значение относиться к ключу
                 }
                 else
                 {
-                    word_pos += res[i];
+                    word_pos += res[i];     // Значение относиться к позиции
                 }
             }
 
@@ -198,6 +207,7 @@ void find_word_prep()
     }
 }
 
+// Главное меню программы
 void main_menu()
 {
     while (choice != main_menu_total)
@@ -220,17 +230,17 @@ void main_menu()
         switch (choice)
         {
         case 1:
-            show_all_doc();
+            show_all_doc();     // Показать список документов
             printf("\n");
             break;
         case 2:
-            add_doc();
+            add_doc();          // Добавить документ в список поиска
             break;
         case 3:
-            del_doc();
+            del_doc();          // Удалить документ из списка 
             break;
         case 4:
-            find_word_prep();
+            find_word_prep();   // Начать подготовку перед поиском
             break;
         }
     }
